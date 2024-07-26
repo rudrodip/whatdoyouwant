@@ -8,3 +8,8 @@ export const formSchema = z.object({
     .min(2)
     .max(50),
 });
+
+export const aiResponseSchema = z.object({
+  type: z.enum(["overlay", "emoji", "image", "outsource"]),
+  output: z.string(),
+});
