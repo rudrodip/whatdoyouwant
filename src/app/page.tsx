@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
+import { generateMeme } from "@/actions";
 
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
@@ -36,23 +37,15 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...values }),
-      });
-
-      if (!response.ok) {
+      const memeUrl = await generateMeme(values.query)
+      
+      if (memeUrl) {
+        setMemeUrl(memeUrl);
+      } else {
         setError(true);
       }
-
-      const data = await response.json();
-      setMemeUrl(data.memeUrl);
     } catch (error) {
       setError(true);
-      setSubmitted(false);
     } finally {
       setLoading(false);
     }
@@ -95,6 +88,9 @@ export default function Home() {
       )}
       {loading && (
         <Image src="/loading.gif" alt="loading" width={300} height={300} />
+      )}
+      {error && (
+        <Image src="/error.gif" alt="loading" width={300} height={300} />
       )}
       {memeUrl && (
         <div className="relative w-full max-w-lg flex flex-col">
