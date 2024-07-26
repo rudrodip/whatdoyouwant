@@ -6,6 +6,9 @@ import { getGeminiResponse } from "@/lib/ai";
 import { createMemeImage } from "@/lib/processing";
 import path from "path";
 
+path.resolve(process.cwd(), 'fonts', 'fonts.conf');
+path.resolve(process.cwd(), 'fonts', 'impact.ttf');
+
 const aiResponseSchema = z.object({
   type: z.enum(["overlay", "emoji", "image", "outsource"]),
   output: z.string(),
