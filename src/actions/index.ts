@@ -87,6 +87,11 @@ export const generateMeme = async (query: string) => {
       return output;
     }
 
+    let basePath = process.cwd()
+    if (process.env.NODE_ENV === 'production') {
+      basePath = path.join(process.cwd(), '.next/server/chunks')
+    }
+
     if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
       if (!imageUrl) return null;
@@ -94,7 +99,7 @@ export const generateMeme = async (query: string) => {
     }
 
     if (type === "overlay") {
-      const overlayPath = path.join(process.cwd(), "public", output);
+      const overlayPath = path.join(basePath, "public", output);
       return createMemeImage(query, "image", overlayPath);
     }
 
