@@ -18,7 +18,7 @@ export const createMemeImage = async (
       <svg xmlns="http://www.w3.org/2000/svg" width="${MEME_WIDTH}" height="${MEME_HEIGHT}">
         <text x="${
           MEME_WIDTH / 2
-        }" y="80" font-size="60" font-weight="bold" fill="black" text-anchor="middle">
+        }" y="80" font-size="60" font-weight="bold" font-family="Impact, sans-serif" fill="black" text-anchor="middle">
           <tspan x="${MEME_WIDTH / 2}" dy="0">Yeh lo tumhare liye</tspan>
           <tspan x="${MEME_WIDTH / 2}" dy="55">${query
       .replace(/&/g, "&amp;")

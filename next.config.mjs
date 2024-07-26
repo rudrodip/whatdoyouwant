@@ -8,6 +8,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    outputFileTracingIncludes: {
+      "./src/lib/*": ["./assets/**"]
+    }
+  }
 };
 
 export default nextConfig;
