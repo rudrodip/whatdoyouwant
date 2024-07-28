@@ -14,7 +14,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ArrowRightIcon, DownloadIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
+import {
+  ArrowRightIcon,
+  DownloadIcon,
+  GitHubLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
 import { generateMeme } from "@/actions";
@@ -42,7 +47,7 @@ export default function MainForm() {
 
     try {
       const memeUrl = await generateMeme(values.query, ref);
-      
+
       if (memeUrl) {
         setMemeUrl(memeUrl);
       } else {
@@ -110,9 +115,14 @@ export default function MainForm() {
           </Button>
         </div>
       )}
-      <a href={siteConfig.links.github} target="_blank" className="absolute bottom-5 right-5">
-        <GitHubLogoIcon />
-      </a>
+      <div className="absolute bottom-5 right-5 flex items-center gap-5">
+        <a href={siteConfig.links.twitter} target="_blank">
+          <TwitterLogoIcon />
+        </a>
+        <a href={siteConfig.links.github} target="_blank">
+          <GitHubLogoIcon />
+        </a>
+      </div>
     </main>
   );
 }
