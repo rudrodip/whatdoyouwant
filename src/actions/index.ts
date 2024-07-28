@@ -90,9 +90,7 @@ export const generateMeme = async (query: string) => {
       return output;
     }
 
-    let basePath = process.cwd()
-    let folders = fs.readdirSync(process.cwd())
-    console.log("Folders:", folders)
+    const basePath = process.cwd()
 
     if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
