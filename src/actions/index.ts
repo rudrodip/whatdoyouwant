@@ -5,6 +5,7 @@ import { getOverlayImageUrl } from "@/lib/unsplash";
 import { getGeminiResponse } from "@/lib/ai";
 import { createMemeImage } from "@/lib/processing";
 import path from "path";
+import { storeInformation } from "@/lib/firebase";
 import { headers } from "next/headers";
 
 path.resolve(process.cwd(), "assets", "fonts", "fonts.conf");
@@ -14,7 +15,6 @@ path.resolve("./public/**/*");
 
 export const generateMeme = async (query: string, ref?: string) => {
   const ip = IP();
-  console.log(ip, ref);
 
   try {
     let aiResponseString = await getGeminiResponse(generatePrompt(query));
@@ -32,6 +32,7 @@ export const generateMeme = async (query: string, ref?: string) => {
     if (!parsedResponse.success) return null;
 
     const { type, output } = parsedResponse.data;
+    await storeInformation(query, output, ip, ref ?? "");
 
     if (type === "image") {
       return output;

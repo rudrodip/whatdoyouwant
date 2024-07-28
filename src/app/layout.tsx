@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site.config";
 import { Suspense } from "react";
 
-
 const fontSans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 const fontHeading = Manrope({ subsets: ["latin"], variable: "--font-heading" });
 
