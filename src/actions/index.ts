@@ -7,7 +7,8 @@ import { createMemeImage } from "@/lib/processing";
 import path from "path";
 import fs from "fs"
 
-path.resolve("./assets/fonts/impact.ttf")
+path.resolve(process.cwd(), 'assets', 'fonts', 'fonts.conf');
+path.resolve(process.cwd(), 'assets', 'fonts', 'impact.ttf');
 path.resolve("./public/**/*")
 
 const aiResponseSchema = z.object({
@@ -90,12 +91,6 @@ export const generateMeme = async (query: string) => {
     }
 
     let basePath = process.cwd()
-    // if (process.env.NODE_ENV === 'production') {
-    //   basePath = path.join(process.cwd(), '.next/server/chunks')
-    // }
-
-    // print all the folders in the cwd
-    console.log("CWD:", process.cwd())
     let folders = fs.readdirSync(process.cwd())
     console.log("Folders:", folders)
 
