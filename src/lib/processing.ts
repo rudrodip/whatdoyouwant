@@ -24,7 +24,7 @@ export const createMemeImage = async (
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")}</tspan>
-          <tspan x="${MEME_WIDTH / 2}" dy="55">le aya hun</tspan>
+          <tspan x="${MEME_WIDTH / 2}" dy="55">leke aya hun</tspan>
         </text>
       </svg>
     `;
