@@ -14,11 +14,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ArrowRightIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon, DownloadIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
 import { generateMeme } from "@/actions";
 import { useSearchParams } from "next/navigation";
+import { siteConfig } from "@/config/site.config";
 
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
@@ -109,6 +110,9 @@ export default function Home() {
           </Button>
         </div>
       )}
+      <a href={siteConfig.links.github} target="_blank" className="absolute bottom-5 right-5">
+        <GitHubLogoIcon />
+      </a>
     </main>
   );
 }

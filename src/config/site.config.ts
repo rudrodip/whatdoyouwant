@@ -10,6 +10,6 @@ export const siteConfig = {
   ogImage: "https://whatyouwant.rdsx.dev/og.png",
   links: {
     twitter: "https://x.com/rds_agi",
-    github: "https://github.com/rudrodip/whatyouwant"
+    github: "https://github.com/rudrodip/whatdoyouwant"
   }
 };
