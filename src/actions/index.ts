@@ -8,6 +8,7 @@ import path from "path";
 import fs from "fs"
 
 path.resolve("./assets/fonts/impact.ttf")
+path.resolve("./public/**/*")
 
 const aiResponseSchema = z.object({
   type: z.enum(["overlay", "emoji", "image", "outsource"]),
@@ -97,8 +98,6 @@ export const generateMeme = async (query: string) => {
     console.log("CWD:", process.cwd())
     let folders = fs.readdirSync(process.cwd())
     console.log("Folders:", folders)
-    console.log(fs.readdirSync(path.join(basePath, "../")))
-    console.log(fs.readdirSync(path.join(basePath, "../../")))
 
     if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
@@ -107,7 +106,7 @@ export const generateMeme = async (query: string) => {
     }
 
     if (type === "overlay") {
-      const overlayPath = path.join(basePath, "../../public", output);
+      const overlayPath = path.join(basePath, "public", output);
       return createMemeImage(query, "image", overlayPath);
     }
 

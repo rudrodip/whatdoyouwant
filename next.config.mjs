@@ -10,7 +10,7 @@ const nextConfig = {
   },
   experimental: {
     outputFileTracingIncludes: {
-      '/': ['./pulic/**/*'],
+      '/': ['./public/**/*'],
     },
   },
 };
