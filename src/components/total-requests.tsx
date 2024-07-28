@@ -1,5 +1,7 @@
 import { getTotalRequests } from "@/lib/firebase"
 
+export const dynamic = 'force-dynamic';
+
 export default async function TotalRequests() {
   const totalRequests = await getTotalRequests();
 
