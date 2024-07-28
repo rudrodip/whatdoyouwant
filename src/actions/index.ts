@@ -5,6 +5,7 @@ import { getOverlayImageUrl } from "@/lib/unsplash";
 import { getGeminiResponse } from "@/lib/ai";
 import { createMemeImage } from "@/lib/processing";
 import path from "path";
+import fs from "fs"
 
 path.resolve("./assets/fonts/impact.ttf")
 
@@ -91,6 +92,11 @@ export const generateMeme = async (query: string) => {
     // if (process.env.NODE_ENV === 'production') {
     //   basePath = path.join(process.cwd(), '.next/server/chunks')
     // }
+
+    // print all the folders in the cwd
+    console.log("CWD:", process.cwd())
+    let folders = fs.readdirSync(process.cwd())
+    console.log("Folders:", folders)
 
     if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
