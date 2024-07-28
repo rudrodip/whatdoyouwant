@@ -105,7 +105,7 @@ export const generateMeme = async (query: string) => {
     }
 
     if (type === "overlay") {
-      const overlayPath = path.join(basePath, "public", output);
+      const overlayPath = path.join(basePath, "../../public", output);
       return createMemeImage(query, "image", overlayPath);
     }
 
