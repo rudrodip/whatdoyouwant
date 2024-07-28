@@ -116,6 +116,7 @@ Examples:
 
 
 Try your best to just use special cases, and emojis. if not then just use outsource type.
+Remember user can use "bengali" or "hindi" language. When you need to use outsource type and query is in different language than english, convert it to english so that its easier to find out the image.
 Here's the query: ${query}
 `;
 

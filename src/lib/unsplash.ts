@@ -14,8 +14,8 @@ export const getOverlayImageUrl = async (
       query,
       perPage: 1,
     });
-
     if (response.errors) return null;
+    if (response.response.results.length === 0) return null;
     return response.response.results[0].urls.thumb;
   } catch (error) {
     console.error("Error fetching image from Unsplash:", error);
