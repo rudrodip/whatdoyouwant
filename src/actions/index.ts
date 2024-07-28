@@ -97,6 +97,8 @@ export const generateMeme = async (query: string) => {
     console.log("CWD:", process.cwd())
     let folders = fs.readdirSync(process.cwd())
     console.log("Folders:", folders)
+    console.log(fs.readdirSync(path.join(basePath, "../")))
+    console.log(fs.readdirSync(path.join(basePath, "../../")))
 
     if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
