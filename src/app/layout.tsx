@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site.config";
+import { Suspense } from "react";
 
 
 const fontSans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
@@ -59,7 +60,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(fontHeading.className, fontSans.className, "w-full h-[100dvh] flex justify-center items-center")}>
-        {children}
+        <Suspense fallback={null}>
+          {children}
+        </Suspense>
       </body>
     </html>
   );
