@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -26,4 +26,9 @@ export const storeInformation = async (query: string, output: string, ip: string
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+}
+
+export const getTotalRequests = async () => {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  return querySnapshot.size;
 }
