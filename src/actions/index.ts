@@ -5,11 +5,61 @@ import { getOverlayImageUrl } from "@/lib/unsplash";
 import { getGeminiResponse } from "@/lib/ai";
 import { createMemeImage } from "@/lib/processing";
 import path from "path";
-import fs from "fs"
+import { headers } from "next/headers";
 
-path.resolve(process.cwd(), 'assets', 'fonts', 'fonts.conf');
-path.resolve(process.cwd(), 'assets', 'fonts', 'impact.ttf');
-path.resolve("./public/**/*")
+path.resolve(process.cwd(), "assets", "fonts", "fonts.conf");
+path.resolve(process.cwd(), "assets", "fonts", "impact.ttf");
+path.resolve(process.cwd(), "assets", "fonts", "noto.ttf");
+path.resolve("./public/**/*");
+
+export const generateMeme = async (query: string, ref?: string) => {
+  const ip = IP();
+  console.log(ip, ref);
+
+  try {
+    let aiResponseString = await getGeminiResponse(generatePrompt(query));
+    if (!aiResponseString) return null;
+
+    if (aiResponseString.includes("`")) {
+      const aiResArray = aiResponseString.split("\n");
+      aiResArray.shift();
+      aiResArray.pop();
+      aiResponseString = aiResArray.join("\n");
+    }
+
+    const aiResponse: AiResponse = JSON.parse(aiResponseString);
+    const parsedResponse = aiResponseSchema.safeParse(aiResponse);
+    if (!parsedResponse.success) return null;
+
+    const { type, output } = parsedResponse.data;
+
+    if (type === "image") {
+      return output;
+    }
+
+    const basePath = process.cwd();
+
+    if (type === "outsource") {
+      const imageUrl = await getOverlayImageUrl(query);
+      if (!imageUrl) return null;
+      return createMemeImage(query, "image", imageUrl);
+    }
+
+    if (type === "overlay") {
+      const overlayPath = path.join(basePath, "public", output);
+      return createMemeImage(query, "image", overlayPath);
+    }
+
+    if (type === "emoji") {
+      return createMemeImage(query, "emoji", output);
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error generating meme:", error);
+    return null;
+  }
+};
 
 const aiResponseSchema = z.object({
   type: z.enum(["overlay", "emoji", "image", "outsource"]),
@@ -68,48 +118,13 @@ Try your best to just use special cases, and emojis. if not then just use outsou
 Here's the query: ${query}
 `;
 
-export const generateMeme = async (query: string) => {
-  try {
-    let aiResponseString = await getGeminiResponse(generatePrompt(query));
-    if (!aiResponseString) return null;
+function IP() {
+  const FALLBACK_IP_ADDRESS = "0.0.0.0";
+  const forwardedFor = headers().get("x-forwarded-for");
 
-    if (aiResponseString.includes("`")) {
-      const aiResArray = aiResponseString.split("\n")
-      aiResArray.shift()
-      aiResArray.pop()
-      aiResponseString = aiResArray.join("\n")
-    }
-
-    const aiResponse: AiResponse = JSON.parse(aiResponseString);
-    const parsedResponse = aiResponseSchema.safeParse(aiResponse);
-    if (!parsedResponse.success) return null;
-
-    const { type, output } = parsedResponse.data;
-
-    if (type === "image") {
-      return output;
-    }
-
-    const basePath = process.cwd()
-
-    if (type === "outsource") {
-      const imageUrl = await getOverlayImageUrl(query);
-      if (!imageUrl) return null;
-      return createMemeImage(query, "image", imageUrl);
-    }
-
-    if (type === "overlay") {
-      const overlayPath = path.join(basePath, "public", output);
-      return createMemeImage(query, "image", overlayPath);
-    }
-
-    if (type === "emoji") {
-      return createMemeImage(query, "emoji", output);
-    }
-
-    return null;
-  } catch (error) {
-    console.error("Error generating meme:", error);
-    return null;
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0] ?? FALLBACK_IP_ADDRESS;
   }
-};
+
+  return headers().get("x-real-ip") ?? FALLBACK_IP_ADDRESS;
+}

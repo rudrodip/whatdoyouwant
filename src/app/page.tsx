@@ -18,12 +18,14 @@ import { ArrowRightIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
 import { generateMeme } from "@/actions";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [memeUrl, setMemeUrl] = useState<string | null>(null);
+  const searchParam = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,9 +37,10 @@ export default function Home() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitted(true);
     setLoading(true);
+    const ref = searchParam.get("ref") ?? undefined;
 
     try {
-      const memeUrl = await generateMeme(values.query)
+      const memeUrl = await generateMeme(values.query, ref);
       
       if (memeUrl) {
         setMemeUrl(memeUrl);
