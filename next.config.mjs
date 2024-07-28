@@ -10,8 +10,7 @@ const nextConfig = {
   },
   experimental: {
     outputFileTracingIncludes: {
-      '/src/actions': ['./pulic/**/*'],
-      '/src/lib': ['./pulic/**/*'],
+      '/': ['./pulic/**/*'],
     },
   },
 };
