@@ -18,10 +18,6 @@ const TotalRequests = () => {
     };
 
     fetchTotalRequests();
-
-    const intervalId = setInterval(fetchTotalRequests, 5000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
