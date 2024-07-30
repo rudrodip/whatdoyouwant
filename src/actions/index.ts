@@ -32,35 +32,43 @@ export const generateMeme = async (query: string, ref?: string) => {
     if (!parsedResponse.success) return null;
 
     const { type, output } = parsedResponse.data;
-    await storeInformation(query, output, ip, ref ?? "");
+
+    let result: string | null = null;
 
     if (type === "image") {
-      return output;
-    }
-
-    const basePath = process.cwd();
-
-    if (type === "outsource") {
+      result = output;
+    } else if (type === "outsource") {
       const imageUrl = await getOverlayImageUrl(query);
       if (!imageUrl) return null;
-      return createMemeImage(query, "image", imageUrl);
-    }
-
-    if (type === "overlay") {
+      const imageBuffer = await downloadImageBuffer(imageUrl);
+      result = await createMemeImage(query, "image", imageBuffer);
+    } else if (type === "overlay") {
+      const basePath = process.cwd();
       const overlayPath = path.join(basePath, "public", output);
-      return createMemeImage(query, "image", overlayPath);
+      result = await createMemeImage(query, "image", overlayPath);
+    } else if (type === "emoji") {
+      result = await createMemeImage(query, "emoji", output);
     }
 
-    if (type === "emoji") {
-      return createMemeImage(query, "emoji", output);
+    if (result) {
+      setTimeout(() => {
+        storeInformation(query, output, ip, ref ?? "")
+          .catch(error => console.error("Error storing information:", error));
+      }, 0);
     }
 
-    return null;
+    return result;
   } catch (error) {
     console.error("Error generating meme:", error);
     return null;
   }
 };
+
+async function downloadImageBuffer(url: string): Promise<Buffer> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch image: ${response.statusText}`);
+  return Buffer.from(await response.arrayBuffer());
+}
 
 const aiResponseSchema = z.object({
   type: z.enum(["overlay", "emoji", "image", "outsource"]),
@@ -117,6 +125,7 @@ Examples:
 
 Try your best to just use special cases, and emojis. if not then just use outsource type.
 Remember user can use "bengali" or "hindi" language. When you need to use outsource type and query is in different language than english, convert it to english so that its easier to find out the image.
+MAKE SURE TO USE "outsource" TYPE WHEN YOU ARE SIMPLY USING THE QUERY AS OUTPUT.
 Here's the query: ${query}
 `;
 
