@@ -55,12 +55,12 @@ export const createMemeImage = async (
         top: 468,
         left: 627,
       });
-      composites.push({
-        input: Buffer.from(textSvg),
-        top: 0,
-        left: 0,
-      });
     }
+    composites.push({
+      input: Buffer.from(textSvg),
+      top: 0,
+      left: 0,
+    });
     const memeBuffer = await sharp(baseImagePath)
       .composite(composites)
       .toBuffer();
