@@ -1,6 +1,6 @@
 "use server";
 
-import sharp from "sharp";
+import sharp, { OverlayOptions } from "sharp";
 import path from "path";
 
 const MEME_WIDTH = 1010;
@@ -9,7 +9,7 @@ const MEME_HEIGHT = 730;
 export const createMemeImage = async (
   query: string,
   overlayType: "emoji" | "image",
-  overlayContent: string
+  overlayContent: string | Buffer
 ): Promise<string | null> => {
   try {
     const baseImagePath = path.join(process.cwd(), "public", "base.png");
@@ -29,13 +29,13 @@ export const createMemeImage = async (
       </svg>
     `;
 
-    const composites = [];
-
+    const composites: OverlayOptions[] = [];
+    
     if (overlayType === "emoji") {
       composites.push({
         input: {
           text: {
-            text: overlayContent,
+            text: overlayContent.toString(),
             font: "sans-serif",
             rgba: true,
             width: 180,
@@ -55,12 +55,12 @@ export const createMemeImage = async (
         top: 468,
         left: 627,
       });
+      composites.push({
+        input: Buffer.from(textSvg),
+        top: 0,
+        left: 0,
+      });
     }
-    composites.push({
-      input: Buffer.from(textSvg),
-      top: 0,
-      left: 0,
-    });
     const memeBuffer = await sharp(baseImagePath)
       .composite(composites)
       .toBuffer();
