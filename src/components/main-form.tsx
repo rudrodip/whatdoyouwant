@@ -96,14 +96,14 @@ export default function MainForm() {
         </Form>
       )}
       {loading && (
-        <Image src="/loading.gif" alt="loading" width={300} height={300} />
+        <Image src="/loading.gif" alt="loading" width={300} height={300} unoptimized />
       )}
       {error && (
-        <Image src="/error.gif" alt="loading" width={300} height={300} />
+        <Image src="/error.gif" alt="loading" width={300} height={300} unoptimized />
       )}
       {memeUrl && (
         <div className="relative w-full max-w-lg flex flex-col">
-          <Image src={memeUrl} alt="loading" width={1000} height={700} />
+          <Image src={memeUrl} alt="loading" width={1000} height={700} unoptimized />
           <Button
             variant="ghost"
             className="size-8 p-0 absolute bottom-0 right-0"
