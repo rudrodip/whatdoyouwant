@@ -17,14 +17,12 @@ import { Input } from "@/components/ui/input";
 import {
   ArrowRightIcon,
   DownloadIcon,
-  GitHubLogoIcon,
-  TwitterLogoIcon,
 } from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
 import { generateMeme } from "@/actions";
 import { useSearchParams } from "next/navigation";
-import { siteConfig } from "@/config/site.config";
+import { cn } from "@/lib/utils";
 
 export default function MainForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -95,12 +93,9 @@ export default function MainForm() {
           </form>
         </Form>
       )}
-      {loading && (
-        <Image src="/loading.gif" alt="loading" width={300} height={300} unoptimized />
-      )}
-      {error && (
-        <Image src="/error.gif" alt="loading" width={300} height={300} unoptimized />
-      )}
+      
+      <Image src="/loading.gif" alt="loading" width={300} height={300} unoptimized className={cn(!loading && "hidden")} />
+      <Image src="/error.gif" alt="loading" width={300} height={300} unoptimized className={cn(!error && "hidden")} />
       {memeUrl && (
         <div className="relative w-full max-w-lg flex flex-col">
           <Image src={memeUrl} alt="loading" width={1000} height={700} unoptimized />
@@ -115,14 +110,6 @@ export default function MainForm() {
           </Button>
         </div>
       )}
-      <div className="absolute bottom-5 right-5 flex items-center gap-5">
-        <a href={siteConfig.links.twitter} target="_blank">
-          <TwitterLogoIcon />
-        </a>
-        <a href={siteConfig.links.github} target="_blank">
-          <GitHubLogoIcon />
-        </a>
-      </div>
     </main>
   );
 }
