@@ -1,6 +1,6 @@
 import { getTotalRequests } from "@/lib/firebase";
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic'
 
 const TotalRequests = async () => {
   const totalRequests = await getTotalRequests();
