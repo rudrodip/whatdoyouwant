@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
             flexDirection: "column",
             alignItems: "center",
             backgroundColor: "#fff",
-            fontSize: 80,
+            fontSize: 60,
             fontWeight: 600,
           }}
         >
