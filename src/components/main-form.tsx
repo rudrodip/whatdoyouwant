@@ -47,11 +47,15 @@ export default function MainForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitted(true);
     setLoading(true);
-    const ref = searchParam.get("ref") ?? undefined;
+    const ref = searchParam.get("ref") ?? "";
+    const query = searchParam.get("query");
+    if (query !== values.query) {
+      router.push(`/?query=${encodeURIComponent(values.query)}`);
+    }
 
     try {
       const imageResponse = await fetch(
-        "/api/og?query=" + values.query + "&ref=" + ref
+        `/api/og?query=${values.query}&ref=${ref}`
       );
       const imageBlob = await imageResponse.blob();
 
