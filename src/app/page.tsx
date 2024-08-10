@@ -29,6 +29,13 @@ export async function generateMetadata(
         },
       ],
     },
+    twitter: {
+      images: {
+        url: ogImage,
+        width: 1010,
+        height: 730,
+      },
+    },
   };
 }
 
