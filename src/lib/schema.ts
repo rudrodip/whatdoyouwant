@@ -10,6 +10,6 @@ export const formSchema = z.object({
 });
 
 export const aiResponseSchema = z.object({
-  type: z.enum(["overlay", "emoji", "image", "outsource"]),
+  type: z.enum(["direct_image", "emoji", "image", "outsource"]),
   output: z.string(),
 });
