@@ -5,8 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createApi } from "unsplash-js";
 
 export const runtime = "edge";
-export const alt = "What do you want?";
-export const size = {
+const size = {
   width: 1010,
   height: 730,
 };
@@ -23,113 +22,117 @@ const aiResponseSchema = z.object({
 });
 
 type AiResponse = z.infer<typeof aiResponseSchema>;
-export const contentType = "image/png";
 
 export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get("query") || "cat";
-  const font = fetch(
-    new URL("../../../../assets/fonts/impact.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  try {
+    const query = request.nextUrl.searchParams.get("query") || "cat";
+    const font = fetch(
+      new URL("../../../../assets/fonts/impact.ttf", import.meta.url)
+    ).then((res) => res.arrayBuffer());
 
-  const sentence = `Yeh lo tumhare liye ${query} leke aya hu`;
-  const prompt = generatePrompt(query);
-  let result = (await model.generateContent(prompt)).response.text();
-  if (result.includes("`")) {
-    const aiResArray = result.split("\n");
-    aiResArray.shift();
-    aiResArray.pop();
-    result = aiResArray.join("\n");
-  }
-  const aiResponse: AiResponse = JSON.parse(result);
-  const parsedResponse = aiResponseSchema.safeParse(aiResponse);
-  if (!parsedResponse.success) return null;
-
-  const { type, output } = parsedResponse.data;
-  let imageUrl: string | null = null;
-  if (type === "image") {
-    imageUrl = output;
-  } else if (type === "outsource") {
-    imageUrl = await getOverlayImageUrl(output);
-  } else if (type === "direct_image") {
-    imageUrl = output;
-    // send the raw image directly
-    return fetch(imageUrl);
-  }
-
-  const outputElement = imageUrl ? (
-    <img src={imageUrl} alt={output} width="100%" height="100%" />
-  ) : (
-    output
-  );
-
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          backgroundColor: "#fff",
-          fontSize: 80,
-          fontWeight: 600,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            zIndex: -100,
-          }}
-        >
-          <img
-            src="https://whatyouwant.rdsx.dev/base.png"
-            alt="base"
-            width="100%"
-            height="100%"
-          />
-        </div>
-        <div
-          style={{
-            textAlign: "center",
-            zIndex: 1000,
-            position: "absolute",
-            maxWidth: "90%",
-          }}
-        >
-          {sentence}
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: "468px",
-            left: "627px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "180px",
-            height: "180px",
-            fontSize: 180,
-          }}
-        >
-          {outputElement}
-        </div>
-      </div>
-    ),
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Inter",
-          data: await font,
-          style: "normal",
-          weight: 400,
-        },
-      ],
+    const sentence = `Yeh lo tumhare liye ${query} leke aya hu`;
+    const prompt = generatePrompt(query);
+    let result = (await model.generateContent(prompt)).response.text();
+    if (result.includes("`")) {
+      const aiResArray = result.split("\n");
+      aiResArray.shift();
+      aiResArray.pop();
+      result = aiResArray.join("\n");
     }
-  );
+    const aiResponse: AiResponse = JSON.parse(result);
+    const parsedResponse = aiResponseSchema.safeParse(aiResponse);
+    if (!parsedResponse.success) return new Response("Error parsing response", { status: 500 });
+
+    const { type, output } = parsedResponse.data;
+    let imageUrl: string | null = null;
+    if (type === "image") {
+      imageUrl = output;
+    } else if (type === "outsource") {
+      imageUrl = await getOverlayImageUrl(output);
+    } else if (type === "direct_image") {
+      imageUrl = output;
+      // send the raw image directly
+      // return fetch(imageUrl);
+    }
+
+    const outputElement = imageUrl ? (
+      <img src={imageUrl} alt={output} width="100%" height="100%" />
+    ) : (
+      output
+    );
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#fff",
+            fontSize: 80,
+            fontWeight: 600,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              zIndex: -100,
+            }}
+          >
+            <img
+              src="https://whatyouwant.rdsx.dev/base.png"
+              alt="base"
+              width="100%"
+              height="100%"
+            />
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              zIndex: 1000,
+              position: "absolute",
+              maxWidth: "90%",
+            }}
+          >
+            {sentence}
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              top: "468px",
+              left: "627px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "180px",
+              height: "180px",
+              fontSize: 180,
+            }}
+          >
+            {outputElement}
+          </div>
+        </div>
+      ),
+      {
+        ...size,
+        fonts: [
+          {
+            name: "Inter",
+            data: await font,
+            style: "normal",
+            weight: 400,
+          },
+        ],
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return new Response("Error generating meme", { status: 500 });
+  }
 }
 
 const generatePrompt = (query: string) => `
