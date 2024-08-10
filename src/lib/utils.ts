@@ -1,3 +1,4 @@
+import { siteConfig } from "@/config/site.config";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -7,6 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getBasePath() {
   return process.env.NODE_ENV === "production"
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    ? siteConfig.url
     : "http://localhost:3000";
 }
