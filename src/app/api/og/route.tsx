@@ -154,7 +154,6 @@ export async function GET(request: NextRequest) {
               display: "flex",
               width: "100%",
               height: "100%",
-              zIndex: -100,
             }}
           >
             <svg
@@ -330,7 +329,6 @@ z"
           <div
             style={{
               textAlign: "center",
-              zIndex: 1000,
               position: "absolute",
               maxWidth: "90%",
             }}
