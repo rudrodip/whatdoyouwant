@@ -20,7 +20,6 @@ import {
 } from "@radix-ui/react-icons";
 import { useState } from "react";
 import Image from "next/image";
-import { generateMeme } from "@/actions";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +27,7 @@ export default function MainForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [memeUrl, setMemeUrl] = useState<string | null>(null);
+  const [memeUrl, setMemeUrl] = useState<string>("");
   const searchParam = useSearchParams();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -44,10 +43,13 @@ export default function MainForm() {
     const ref = searchParam.get("ref") ?? undefined;
 
     try {
-      const memeUrl = await generateMeme(values.query, ref);
+      const imageResponse = await fetch("/api/og?query=" + values.query + "&ref=" + ref);
+      const imageBlob = await imageResponse.blob();
 
-      if (memeUrl) {
-        setMemeUrl(memeUrl);
+      if (imageBlob) {
+        const imageUrl = URL.createObjectURL(imageBlob);
+        setMemeUrl(imageUrl);
+        setError(false);
       } else {
         setError(true);
       }
