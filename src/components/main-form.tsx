@@ -45,41 +45,56 @@ export default function MainForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setSubmitted(true);
-    setLoading(true);
-    const ref = searchParam.get("ref") ?? "";
-    const query = searchParam.get("query");
-    if (query !== values.query) {
-      router.push(`/?query=${encodeURIComponent(values.query)}`);
-    }
-
-    try {
-      const imageResponse = await fetch(
-        `/api/og?query=${values.query}&ref=${ref}`
-      );
-      const imageBlob = await imageResponse.blob();
-
-      if (imageBlob) {
-        const imageUrl = URL.createObjectURL(imageBlob);
-        setBlob(imageBlob);
-        setMemeUrl(imageUrl);
-        setError(false);
-      } else {
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    router.push(`/?query=${values.query}`);
   }
+
+  const resetState = () => {
+    setMemeUrl("");
+    setBlob(null);
+    setSubmitted(false);
+    form.setValue("query", "");
+    const query = searchParam.get("query");
+    if (query) {
+      router.push("/");
+    }
+  };
 
   useEffect(() => {
     const query = searchParam.get("query");
-    if (!query) return;
+    if (!query) {
+      setMemeUrl("");
+      setBlob(null);
+      setSubmitted(false);
+      form.setValue("query", "");
+      return;
+    }
+
+    async function fetchImage(query: string) {
+      setSubmitted(true);
+      setLoading(true);
+      const ref = searchParam.get("ref") ?? "";
+
+      try {
+        const imageResponse = await fetch(`/api/og?query=${query}&ref=${ref}`);
+        const imageBlob = await imageResponse.blob();
+
+        if (imageBlob) {
+          const imageUrl = URL.createObjectURL(imageBlob);
+          setBlob(imageBlob);
+          setMemeUrl(imageUrl);
+          setError(false);
+        } else {
+          setError(true);
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
     form.setValue("query", query);
-    onSubmit({ query });
+    fetchImage(query);
   }, [form, searchParam]);
 
   const handleCopy = async () => {
@@ -109,17 +124,6 @@ export default function MainForm() {
     }
   };
 
-  const resetState = () => {
-    setMemeUrl("");
-    setBlob(null);
-    setSubmitted(false);
-    form.setValue("query", "");
-    const query = searchParam.get("query");
-    if (query) {
-      router.push("/");
-    }
-  }
-
   return (
     <main className="w-full flex justify-center items-center p-2 lg:p-0">
       {!submitted && (
@@ -139,6 +143,7 @@ export default function MainForm() {
                       autoComplete="off"
                       {...field}
                       className="rounded-r-none border-r-0 ring-0 focus-visible:ring-0"
+                      autoFocus
                     />
                   </FormControl>
                   <FormMessage />
