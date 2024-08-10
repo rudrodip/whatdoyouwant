@@ -18,7 +18,7 @@ import {
   ArrowRightIcon,
   DownloadIcon,
 } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -59,6 +59,14 @@ export default function MainForm() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    const query = searchParam.get("query");
+    if (!query) return;
+
+    form.setValue("query", query);
+    onSubmit({ query });
+  }, [form, searchParam])
 
   return (
     <main className="w-full flex justify-center items-center p-2 lg:p-0">
