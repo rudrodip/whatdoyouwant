@@ -382,9 +382,11 @@ Here's the list of direct image you can use:
 3. https://whatyouwant.rdsx.dev/special-case/foodie.jpeg
 4. https://whatyouwant.rdsx.dev/special-case/robber.gif
 5. https://whatyouwant.rdsx.dev/special-case/gf.gif
+6. https://whatyouwant.rdsx.dev/special-case/soulmate.png
 
 If anyone tries to flirt, like they respond with "you" or kiss or hug or boyfriend or similar romantic query, respond with the direct image "https://c.tenor.com/O69qbS-sDkUAAAAC/tenor.gif"
 If anyone asks for gf, girlfriend, lady, woman, wife, cute girl, or female figure, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/gf.gif"
+If anyone asks for soulmate, lover, partner, friend, or similar wholesome query respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/soulmate.png"
 If anyone tries to say something rude or cute or something villain-ish like blood, or anything that will make someone angry or similar, respond with the direct image "https://whatyouwant.rdsx.dev/special-case/enemy-meme.jpeg"
 If anyone asks for heavy food, like pizza, burger, rice or heavy food, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/foodie.jpeg"
 Anything related to money, or rich, or gold or diamond or similar, respond with the direct image: "http://localhost:3000/special-case/robber.gif"
