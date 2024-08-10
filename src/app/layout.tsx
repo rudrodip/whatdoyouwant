@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site.config";
 import { Suspense } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 const fontHeading = Manrope({ subsets: ["latin"], variable: "--font-heading" });
@@ -60,6 +61,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(fontHeading.className, fontSans.className, "w-full h-[100dvh] flex justify-center items-center")}>
         <Suspense fallback={null}>
+          <Toaster position="top-right" />
           {children}
         </Suspense>
       </body>
