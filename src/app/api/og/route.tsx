@@ -389,7 +389,7 @@ If anyone asks for gf, girlfriend, lady, woman, wife, cute girl, or female figur
 If anyone asks for soulmate, lover, partner, friend, or similar wholesome query respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/soulmate.png"
 If anyone tries to say something rude or cute or something villain-ish like blood, or anything that will make someone angry or similar, respond with the direct image "https://whatyouwant.rdsx.dev/special-case/enemy-meme.jpeg"
 If anyone asks for heavy food, like pizza, burger, rice or heavy food, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/foodie.jpeg"
-Anything related to money, or rich, or gold or diamond or similar, respond with the direct image: "http://localhost:3000/special-case/robber.gif"
+Anything related to money, or rich, or gold or diamond or similar, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/robber.gif"
 
 Here're some special cases:
 query - cat / kitten or similar, respond with any one of these images:
