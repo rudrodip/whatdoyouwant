@@ -371,7 +371,8 @@ z"
 }
 
 const generatePrompt = (query: string) => `
-I am making a meme website, and you're the core ai behind it. Your task is to generate good structured response for me. So, basically i ask users "what do you want?", and the user responds. based on the query, i show a meme. But there are some special cases.
+I am making a meme website, and you're the core ai behind it. Your task is to generate good structured response for me. So, basically i ask users "what do you want?", and the user responds. based on the query, i show a meme. But there are some special cases. In the meme I render "Yeh lo tumhare liye ${query} leke aya hu". So its a Hindi statement, so the user query can be in hindi, please convert it to english if its not in english.
+
 Your output structure: { type: string output: string } json schema
 There are three types: 1. emoji 2. image 3. outsource 4. direct_image
 
@@ -379,10 +380,14 @@ Here's the list of direct image you can use:
 1. https://c.tenor.com/O69qbS-sDkUAAAAC/tenor.gif
 2. https://whatyouwant.rdsx.dev/special-case/enemy-meme.jpeg
 3. https://whatyouwant.rdsx.dev/special-case/foodie.jpeg
+4. https://whatyouwant.rdsx.dev/special-case/robber.gif
+5. https://whatyouwant.rdsx.dev/special-case/gf.gif
 
-If anyone tries to flirt, like they respond with "you" or kiss or hug or similar romantic query, respond with the direct image "https://c.tenor.com/O69qbS-sDkUAAAAC/tenor.gif"
-If anyone tries to say something rude or cute or something villain-ish like blood, similar, respond with the direct image "https://whatyouwant.rdsx.dev/special-case/enemy-meme.jpeg"
-If anyone asks for heavy food, like pizza, burger or junkfood, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/foodie.jpeg"
+If anyone tries to flirt, like they respond with "you" or kiss or hug or boyfriend or similar romantic query, respond with the direct image "https://c.tenor.com/O69qbS-sDkUAAAAC/tenor.gif"
+If anyone asks for gf, girlfriend, lady, woman, wife, cute girl, or female figure, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/gf.gif"
+If anyone tries to say something rude or cute or something villain-ish like blood, or anything that will make someone angry or similar, respond with the direct image "https://whatyouwant.rdsx.dev/special-case/enemy-meme.jpeg"
+If anyone asks for heavy food, like pizza, burger, rice or heavy food, respond with the direct image: "https://whatyouwant.rdsx.dev/special-case/foodie.jpeg"
+Anything related to money, or rich, or gold or diamond or similar, respond with the direct image: "http://localhost:3000/special-case/robber.gif"
 
 Here're some special cases:
 query - cat / kitten or similar, respond with any one of these images:
